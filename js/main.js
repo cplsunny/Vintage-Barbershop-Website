@@ -10,6 +10,32 @@ const ctaBtn = document.getElementById("ctaBtn");
 const callBtn = document.getElementById("callBtn");
 const phoneLink = document.getElementById("phoneLink");
 const heading = document.getElementById("heroHeading");
+const featureGrid = document.getElementById("featureGrid");
+//----Services Data (Array of Objects)---
+const services = [
+    {
+        title: "Classic Haircut",
+        text: "Timeless cuts with modern precision tailored to your style.",
+        image: "assets/images/feature-1.jpg"
+    },
+    {
+        title: "Beard Trim",
+        text: "Shape and line-up your beard for a clean, sharp finish",
+        image: "assets/images/feature-2.jpg"
+    },
+    {
+        title: "Straight Razor Shave",
+        text: "Hot towel treatment with a smooth traditional shave.",
+        image: "assets/images/feature-3.jpg"
+    }
+];
+//---Navigation Data (Array of Objects)---
+const navLinks = [
+    {label: "Home", href: "#hero"},
+    {label: "Services", href: "#features"},
+    {label: "Book", href: "#cta"},
+    {label: "Contact", href: "#footer"},
+];
 //---Helpers/Functions---
 //Update footeryear automatically
 const setCurrentYear = () => { //this function will update the year in the footer
@@ -75,3 +101,82 @@ if (callBtn) { //only wire this up if the call button exists on the page
         }
     });
 }
+//---Render Features using forEach()---
+const renderFeatures = () => {
+    if (!featureGrid) return; //guard clause- if the featureGrid element doesn't exisat, don't run the function 
+    services.forEach(service => {
+        const card = document.createElement("article");
+        card.classList.add("feature-card");
+        card.innerHTML = `
+        <img src="${service.image}" alt="${service.title}" class="feature-img"
+        />
+        <h3 class="feature-title">${service.title}</h3>
+        <p class="feature-text>${service.text}</p>
+        `;
+        featureGrid.appendChild(card);
+    });
+};
+//if (!featureGrid) return; // guard clause- if the featureGrid element doesn't exist, don't run the function
+//services.forEach(service...) everything in these parentheses will happen to each item in the array 
+//document.createElement("article") //creates an article tag and stores it in the variable, card 
+//card.classLits.add("feature-card"); //adds the class feature-card to the article tag we created
+//card.innHTML = elements... takes the markup we created with all its attributes and gives it to the card variable with the article 
+// tag in it
+//`<img class=-"" /> ...` this is the markup that gets passed to article tag for each card
+//featureGrid.appendChild("card"); //adds each article tag with all the classes, img, h3, p tags...into the element whose ID is 
+// featureGrid
+//---Render Feature using map()---
+const renderfeaturesMap = () => {
+    const cardsHTML = services.map(service => {
+        return `
+        <article class="feature-card">
+        <img src="${service.image}" alt="${service.title}" class="feature-img" />
+        <h3 class="feature-title">${service.title}</h3>
+        <p class="feature-text">${service.text}</p>
+        </article>
+        `;
+    }).join("");
+
+    featureGrid.innerHTML = cardsHTML;
+};
+// array.forEach((item) => {
+    //creat element
+    //insert data
+    //add to page
+    //})
+//---Render Navigation using map()---
+const renderNavigation = () => {
+    //Destop Nav
+    if (nav) {
+        const navHTML = navLinks
+        .map((link) => {
+            return `
+            <a href="${link.href}" class="nav-link">${link.label}</a>
+            `;
+        }).join("");
+
+        nav.innerHTML = navHTML;
+    }
+    //Mobile Nav
+    if (mobileMenu) {
+        const mobileHTML = navLinks.map((link) => {
+            return `
+            <a href="${link.href}" class="mobile-link">${link.label}</a>
+            `;
+        }).join("");
+
+        mobileMenu.innerHTML = mobileHTML;
+    }
+};
+//array.map()
+//return HTML
+//join("")
+//insert into DOM
+//why .join()?
+//Because map returns an array 
+//[<"a>Home</a>", "<a>About</a>"]
+//join converts it into ONE HTML string
+//--Function calls--
+renderFeatures();
+//renderfeaturesMap();
+renderNavigation();
